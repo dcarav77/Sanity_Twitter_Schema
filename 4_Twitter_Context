@@ -1,0 +1,93 @@
+import { createContext, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { client } from '/Users/dcarav77/twitterblockchainapp/twitter-clone-blockchain/pages/library/client.js';
+
+export  const TwitterContext = createContext ()
+  
+export  const TwitterProvider = ({ children}) => {
+        const [appStatus, setAppStatus] = useState('')
+        const [currentAccount, setCurrentAccount] = useState('')
+        const [currentUser, setCurrentUser] = useState({})
+        const [tweets, setTweets] = useState([])
+        const router = useRouter ()
+        
+        useEffect (() => {
+            checkIfWalletIsConnected() 
+        }, [])
+        
+        
+        const checkIfWalletIsConnected = async () => {
+            if (!window.ethereum) return setAppStatus ('noMetaMask')
+            try {
+            const addressArray = await window.ethereum.request({
+                method: 'eth_accounts',
+            })
+                if (addressArray.length > 0) {
+                    setAppStatus('connected')
+                    setCurrentAccount (addressArray [0])
+                    
+                } else {
+                    router.push('/')
+                    setAppStatus ('notConnected')
+        }
+        }   catch (error) {
+            router.push('/')
+            setAppStatus('error')
+        }   
+        }
+        
+        const connectToWallet = async () => {
+            if (window.ethereum) return setAppStatus ('noMetaMask')
+            try {
+            setAppStatus ('loading')
+
+            const addressArray = await window.ethereum.request({
+                method: 'eth_requestAccounts',
+            }) 
+            
+                if (addressArray.length > 0) {
+                setCurrentAccount (addressArray [0])
+                createUserAccount (addressArray [0])
+                
+        }       else {
+                router.push ('/')
+                setAppStatus ('notConnected')
+        }   
+        }       catch (error) {
+                setAppStatus ('error ')
+
+        }
+        }  
+        
+        const createUserAccount = async ( userAddress = currentAccount) => {
+            if (!window.ethereum) return setAppStatus ('noMetaMask')
+            try {
+                const userDoc = {
+                    _type: 'users',
+                    _id: 'lpddw33z',
+                    name: 'Unamed',
+                    isProfileImageNft: false,
+                    profileImage: 'https://img.redbull.com/images/c_crop,x_628,y_0,h_1000,w_800/c_fill,w_400,h_540/q_auto:low,f_auto/redbullcom/2018/10/17/ed382f14-3b3e-40aa-b3fe-09f3fad4a965/sundrun-pillars-climbing-expedition-hanging-climb-hold',
+                    walletAddress: '0xcde6d34dDcB5777540D391C0d075458D9869276C',
+        }  
+                await client.createIfNotExists(userDoc)
+                
+                setAppStatus ('connected')
+        }       catch (error) {
+                router.push('/')
+                setAppStatus('error') 
+        }
+        }
+    
+    return (
+        <TwitterContext.Provider 
+        value = {{
+            appStatus, 
+            currentAccount, 
+            connectToWallet
+            }}
+            > 
+        {children} 
+        </TwitterContext.Provider>
+    )
+} 

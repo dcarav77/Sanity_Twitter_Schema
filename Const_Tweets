@@ -1,0 +1,26 @@
+const tweets = [
+    {
+        displayName: 'DustinCar',
+        userName: '0xcde6d34dDcB5777540D391C0d075458D9869276C',
+        avatar: 'https://d1bvpoagx8hqbg.cloudfront.net/259/ce697834bacdad2949bb49edd98bea34.jpg',
+        text: 'yoyo',
+        isProfileImageNft: false,
+        timestamp: '2022-03-30T09:10:36Z',
+    },
+    {
+        displayName: 'DustinCar',
+        userName: '0xcde6d34dDcB5777540D391C0d075458D9869276C',
+        avatar: 'https://d1bvpoagx8hqbg.cloudfront.net/259/ce697834bacdad2949bb49edd98bea34.jpg',
+        text: 'yoyo',
+        isProfileImageNft: false,
+        timestamp: '2021-03-30T09:10:36Z',
+       },
+       {
+        displayName: 'DustinCar',
+        userName: '0xcde6d34dDcB5777540D391C0d075458D9869276C',
+        avatar: 'https://d1bvpoagx8hqbg.cloudfront.net/259/ce697834bacdad2949bb49edd98bea34.jpg',
+        text: 'yoyo',
+        isProfileImageNft: false,
+        timestamp: '2020-03-30T09:10:36Z',
+       },
+]
